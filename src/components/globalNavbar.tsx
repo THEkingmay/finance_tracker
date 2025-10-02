@@ -2,8 +2,9 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { useCallback, useState } from "react"
+import { useRouter } from "next/navigation"
 
-import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,42 +13,71 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Menu as MenuIcon } from "lucide-react"
+
+import { Menu } from "lucide-react"
+import AlertNotification, { AlertType } from "./ui/alertNotification"
 
 export default function GlobalNavbar() {
+  const [alert, setAlert] = useState<AlertType | null>(null)
+  const [loading, setLoading] = useState(false)
+  const clearAlert = useCallback(() => setAlert(null), [])
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    setLoading(true) // เริ่ม loading
+    try {
+      const res = await fetch("/api/auth/logout")
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.message)
+        router.push('/login')
+    } catch (err) {
+      console.log((err as Error).message)
+      setAlert({
+        alertType: "error",
+        head: "ข้อผิดพลาด",
+        description: (err as Error).message,
+        clear: clearAlert,
+      })
+    } finally {
+      setLoading(false) // จบ loading
+    }
+  }
+
   return (
-    <div className="flex w-full items-center justify-between px-4 py-2 border-b bg-white">
-      {/* โลโก้ */}
-      <div className="flex items-center gap-2">
-        <Link href="/" className="flex items-center">
-            <Image 
-            src="/favicon.ico" 
-            alt="Logo" 
-            width={32} 
-            height={32} 
-            />
-        </Link>
+    <>
+      <div className="flex w-full items-center justify-between px-6 py-3 border-b bg-white">
+        {/* โลโก้ */}
+        <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center">
+            <Image src="/favicon.ico" alt="Logo" width={32} height={32} />
+          </Link>
         </div>
 
-      {/* เมนู Dropdown */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="p-4">
-                <MenuIcon className="w-10 h-10" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="me-2 ">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
-            <Link href="/profile">Profile</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/history" >History</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>Logout</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+        {/* เมนู Dropdown */}
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Menu size={30} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="me-2 ">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="cursor-pointer">
+              <Link href="/profile">Profile</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <Link href="/history">History</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className={`cursor-pointer ${loading ? "opacity-50 pointer-events-none" : ""}`}
+              onClick={handleLogout}
+            >
+              {loading ? "กำลังออก..." : "Logout"}
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {alert && <AlertNotification {...alert} />}
+    </>
   )
 }

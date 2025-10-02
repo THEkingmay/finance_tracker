@@ -5,12 +5,15 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 
+import { useRouter } from "next/navigation"
+
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("") // 🔹 state สำหรับแสดง error
+  const router = useRouter(); 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,8 +34,7 @@ export default function LoginPage() {
 
       if (!res.ok) throw new Error(data.message || "Something went wrong")
 
-      // success - แสดงผลใน console
-      console.log(isLogin ? "Logged in!" : "Registered!", data)
+      router.push('/')
 
       // 🔹 ล้าง input หลัง submit สำเร็จ
       setEmail("")
