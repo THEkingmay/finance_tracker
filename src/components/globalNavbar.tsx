@@ -58,7 +58,7 @@ export default function GlobalNavbar() {
           <DropdownMenuTrigger asChild>
             <Menu size={30} />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="me-2 ">
+          <DropdownMenuContent className="me-5 ">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer">

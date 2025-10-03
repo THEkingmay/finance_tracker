@@ -1,4 +1,5 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { useEffect } from "react";
 
 type AlertType = {
@@ -8,21 +9,32 @@ type AlertType = {
   clear: () => void;
 };
 
-export default function AlertNotification({ alertType, head, description, clear }: AlertType) {
+export default function AlertNotification({
+  alertType,
+  head,
+  description,
+  clear,
+}: AlertType) {
   useEffect(() => {
     const timer = setTimeout(() => clear(), 3000);
     return () => clearTimeout(timer);
-  }, [clear]); // แค่ clear พอ
+  }, [clear]);
 
-  const alertClass =
-    alertType === "success"
-      ? "bg-green-100 border border-green-400 text-green-700"
-      : "bg-red-100 border border-red-400 text-red-700";
+  const isError = alertType === "error";
+  const Icon = isError ? AlertCircle : CheckCircle2;
 
   return (
-    <Alert className={`max-w-[400px] absolute top-16 left-2 ${alertClass}`}>
-      <AlertTitle>{head}</AlertTitle>
-      <AlertDescription>{description}</AlertDescription>
+    <Alert
+      className={`max-w-[250]  md:max-w-[400px] fixed top-20 right-5 z-[9999] flex items-start gap-2 border-2
+        ${isError ? "border-red-500 bg-red-50" : "border-green-500 bg-green-50"}`}
+    >
+      <Icon className={`h-5 w-5 mt-0.5 ${isError ? "text-red-500" : "text-green-500"}`} />
+      <div>
+        <AlertTitle className={isError ? "text-red-700" : "text-green-700"}>
+          {head}
+        </AlertTitle>
+        <AlertDescription className="hidden md:block">{description}</AlertDescription>
+      </div>
     </Alert>
   );
 }
