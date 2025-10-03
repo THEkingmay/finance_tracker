@@ -262,7 +262,7 @@ export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null)
 
       {/* List */}
       {!loading && items.length > 0 && (
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {items.map((t) => (
             <div
               key={t.id}
