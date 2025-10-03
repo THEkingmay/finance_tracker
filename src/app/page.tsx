@@ -25,7 +25,7 @@ type FormInput = {
 // ---------------- Form ----------------
 function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert: (alert: AlertType | null) => void }) {
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  // const router = useRouter()
 
   const [formInput, setFormInput] = useState<FormInput>({
     amount: 0,
@@ -35,7 +35,7 @@ function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert
     date: "",
   })
 
-  const handleChange = (field: keyof FormInput, value: any) => {
+  const handleChange = (field: keyof FormInput, value: string | number | "income" | "expense" ) => {
     setFormInput((prev) => ({ ...prev, [field]: value }))
   }
 
@@ -80,7 +80,7 @@ function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert
       setAlert({
         alertType: "error",
         head: "การเชื่อมต่อล้มเหลว",
-        description: "เซิร์ฟเวอร์ไม่ตอบสนอง ❌",
+        description: (err as Error).message || "เซิร์ฟเวอร์ไม่ตอบสนอง ❌",
         clear: () => setAlert(null),
       })
     } finally {
