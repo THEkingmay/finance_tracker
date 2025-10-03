@@ -19,19 +19,16 @@ export async function GET(
     // 2. ตรวจสอบ token และดึง uid
     const { uid } = jwt.verify(token, process.env.JWT_SECRET!) as { uid: string };
 
-    // 3. สร้างช่วงเวลา start - end ของวันนั้น
-    const startOfDayUTC = new Date(`${date}T00:00:00+07:00`).toISOString()
-  const endOfDayUTC = new Date(`${date}T23:59:59+07:00`).toISOString()
-
-    // console.log(startOfDayUTC , endOfDayUTC)
-    // 4. Query ข้อมูลจาก Supabase    
+    const startOfDay = `${date}T00:00:00`
+    const endOfDay   = `${date}T23:59:59`
+        // 4. Query ข้อมูลจาก Supabase    
     const { data, error } = await supabase
       .from("transactions") // ตรวจสอบว่าตารางชื่อถูกต้อง
       .select("*")
       .eq("uid", uid)
-      .gte("created_at", startOfDayUTC)
-      .lte("created_at", endOfDayUTC);
-
+      .gte("created_at", startOfDay)
+      .lte("created_at", endOfDay)
+      .order("created_at", { ascending: true })
           // console.log(data)
 
     if (error) {

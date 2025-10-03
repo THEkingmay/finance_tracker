@@ -9,8 +9,6 @@ export async function POST(req: NextRequest) {
     const { amount, type, description, category, date } = formInput
     // console.log("รับข้อมูล:", formInput)
  
-    const created_at = new Date(date + ":00").toISOString() // แปลง date จากเวลาไทย เป็น UTC ก่อนเก็บลง supabase timestampz with time zone เพื่อจะแปลงกลับมาเป็นเวลาที่ถุกต้อง
-
     const token = (await cookies()).get("token")?.value
     if (!token) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
@@ -19,14 +17,14 @@ export async function POST(req: NextRequest) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { uid: string }
     const uid = decoded.uid
 
-    const { data, error } = await supabase.from("transactions").insert({
-      uid,
-      amount,
-      type,
-      description,
-      category,
-      created_at, // ✅ ชื่อฟิลด์ตรงกับตาราง
-    }).select()
+      const { data, error } = await supabase.from("transactions").insert({
+        uid,
+        amount,
+        type,
+        description,
+        category,
+        created_at : date, // ✅ ชื่อฟิลด์ตรงกับตาราง
+      }).select()
 
     if (error) throw error
 

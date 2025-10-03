@@ -213,7 +213,7 @@ type ListType = {
   category?: string
   created_at: string
 }
-export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null) => void }) {
+export function DailyHistory({ setAlert , reload }: { setAlert: (alert: AlertType | null) => void , reload : number }) {
   const [items, setItems] = useState<ListType[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -241,10 +241,10 @@ export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null)
     }
 
     getTodayHistory()
-  }, [setAlert])
+  }, [setAlert , reload])
 
   return (
-    <div className="p-6 max-w-6xl mx-auto ">
+    <div className="p-6 max-w-6xl mx-auto  lg:w-6xl">
       <h2 className="text-2xl font-semibold mb-6">💰 รายการเงินของคุณวันนี้</h2>
 
       {/* Loading */}
@@ -262,7 +262,7 @@ export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null)
 
       {/* List */}
       {!loading && items.length > 0 && (
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2  lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
           {items.map((t) => (
             <div
               key={t.id}
@@ -285,7 +285,7 @@ export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null)
                   {t.type === "income" ? "+" : "-"} ฿{t.amount}
                 </span>
                 <span className="text-xs text-gray-400">
-                  {new Date(t.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {new Date(t.created_at ).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
               </div>
             </div>
@@ -297,7 +297,7 @@ export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null)
 }
 
 // ---------------- Modal ----------------
-function FormFinanceModal({ setAlert }: { setAlert: (alert: AlertType | null) => void }) {
+function FormFinanceModal({ setAlert , onSuccess}: {  onSuccess?: () => void , setAlert: (alert: AlertType | null) => void }) {
   const [open, setOpen] = useState(false);
   return (
 
@@ -309,7 +309,7 @@ function FormFinanceModal({ setAlert }: { setAlert: (alert: AlertType | null) =>
       </DialogTrigger>
      <DialogContent className="max-w-lg bg-white shadow-none p-0 rounded-2xl ">
         <DialogTitle className="px-5 pt-3 text-lg">เพิ่มรายการใหม่</DialogTitle>
-        <FormFinance setAlert={setAlert} onSuccess={()=>setOpen(false)}/>
+        <FormFinance setAlert={setAlert} onSuccess={()=>{setOpen(false) ; onSuccess?.()}}/>
       </DialogContent>
     </Dialog>
     
@@ -319,6 +319,7 @@ function FormFinanceModal({ setAlert }: { setAlert: (alert: AlertType | null) =>
 // ---------------- HomePage ----------------
 export default function HomePage() {
   const [alert, setAlert] = useState<AlertType | null>(null)
+  const [triggerReload , setReload] = useState<number>(0) 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {alert && <AlertNotification {...alert} />}
@@ -327,8 +328,8 @@ export default function HomePage() {
         {/* <div className="hidden md:block max-w-md p-6">
           <FormFinance setAlert={setAlert} />
         </div> */}
-        <DailyHistory setAlert={setAlert} />
-        <FormFinanceModal setAlert={setAlert} />
+        <DailyHistory setAlert={setAlert}   reload={triggerReload}/>
+        <FormFinanceModal setAlert={setAlert} onSuccess={() => setReload((prev) => prev + 1)}/>
       </div>
     </div>
   )
