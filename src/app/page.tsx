@@ -244,7 +244,7 @@ export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null)
   }, [setAlert])
 
   return (
-    <div className="p-6 w-6xl mx-auto ">
+    <div className="p-6 max-w-6xl mx-auto ">
       <h2 className="text-2xl font-semibold mb-6">💰 รายการเงินของคุณวันนี้</h2>
 
       {/* Loading */}
@@ -262,7 +262,7 @@ export function DailyHistory({ setAlert }: { setAlert: (alert: AlertType | null)
 
       {/* List */}
       {!loading && items.length > 0 && (
-        <div className="grid gap-4 grid-cols-2 max-w-[50vw] md:grid-cols-2  lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2  lg:grid-cols-4">
           {items.map((t) => (
             <div
               key={t.id}
