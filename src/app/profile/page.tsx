@@ -1,10 +1,10 @@
 import GlobalNavbar from "@/components/globalNavbar";
 
-export default function HistoryPage(){
+export default function ProfilePage(){
     return(
         <div>
             <GlobalNavbar/>
-            History Page
+            ProfilePage
         </div>
     )
 }

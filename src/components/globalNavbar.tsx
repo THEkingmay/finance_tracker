@@ -62,10 +62,10 @@ export default function GlobalNavbar() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="/profile">Profile</Link>
+              <Link href="/profile" className="w-full">Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">
-              <Link href="/history">History</Link>
+              <Link href="/history" className="w-full">History</Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               className={`cursor-pointer ${loading ? "opacity-50 pointer-events-none" : ""}`}
