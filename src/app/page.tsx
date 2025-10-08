@@ -12,15 +12,9 @@ import AlertNotification, { AlertType } from "@/components/ui/alertNotification"
 import { Loader2, TrendingUp, TrendingDown, Save } from "lucide-react"
 import { Dialog, DialogContent , DialogTrigger } from "@/components/ui/dialog"
 import { DialogTitle } from "@radix-ui/react-dialog"
-import { useRouter } from "next/navigation"
 
-type FormInput = {
-  amount: number
-  type: "income" | "expense"
-  description: string
-  category: string
-  date: string
-}
+import type { transaction , FormInput } from "@/type/allType"
+
 
 // ---------------- Form ----------------
 function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert: (alert: AlertType | null) => void }) {
@@ -204,24 +198,17 @@ function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert
   )
 }
 
-type ListType = {
-  id:string ,
-  uid: string
-  amount: number
-  type: "income" | "expense"
-  description?: string
-  category?: string
-  created_at: string
-}
+
 export function DailyHistory({ setAlert , reload }: { setAlert: (alert: AlertType | null) => void , reload : number }) {
-  const [items, setItems] = useState<ListType[]>([])
+  const [items, setItems] = useState<transaction[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const getTodayHistory = async () => {
       setLoading(true)
-      const today = new Date().toISOString().split("T")[0]
-
+      const d = new Date()
+      const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+      console.log(today) // 👉 2025-10-08
       try {
         const res = await fetch(`/api/transactions/${today}`)
         if (!res.ok) throw new Error("Failed to fetch")
