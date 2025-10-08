@@ -4,7 +4,7 @@ export default function HistoryPage(){
     return(
         <div>
             <GlobalNavbar/>
-            History Page
+            History Page TESTEST
         </div>
     )
 }
