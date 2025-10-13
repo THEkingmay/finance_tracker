@@ -44,7 +44,7 @@ export default function GlobalNavbar() {
   }
 
   return (
-    <>
+    <div>
       <div className="flex w-full items-center justify-between px-6 py-3 border-b bg-white">
         {/* โลโก้ */}
         <div className="flex items-center gap-2">
@@ -78,6 +78,6 @@ export default function GlobalNavbar() {
       </div>
 
       {alert && <AlertNotification {...alert} />}
-    </>
+    </div>
   )
 }

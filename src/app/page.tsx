@@ -231,7 +231,7 @@ export function DailyHistory({ setAlert , reload }: { setAlert: (alert: AlertTyp
   }, [setAlert , reload])
 
   return (
-    <div className="p-6 max-w-6xl mx-auto  lg:w-6xl">
+    <div className="p-6 max-w-6xl mx-auto  md:w-6xl">
       <h2 className="text-2xl font-semibold mb-6">💰 รายการเงินของคุณวันนี้</h2>
 
       {/* Loading */}
@@ -249,11 +249,11 @@ export function DailyHistory({ setAlert , reload }: { setAlert: (alert: AlertTyp
 
       {/* List */}
       {!loading && items.length > 0 && (
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
           {items.map((t) => (
             <div
               key={t.id}
-              className="bg-white shadow-md rounded-lg p-4 flex flex-col justify-between border  hover:shadow-xl transition-shadow"
+              className="bg-white shadow-md rounded-lg px-4 py-3 flex flex-col justify-between border  hover:shadow-xl transition-shadow"
             >
               <div className="mb-2">
                 <h3 className="font-medium text-gray-800">{t.description || "—"}</h3>
@@ -308,7 +308,7 @@ export default function HomePage() {
   const [alert, setAlert] = useState<AlertType | null>(null)
   const [triggerReload , setReload] = useState<number>(0) 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-white">
       {alert && <AlertNotification {...alert} />}
       <GlobalNavbar />
       <div className="md:flex">

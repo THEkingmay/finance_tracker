@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState, Fragment } from "react";
-import GlobalNavbar from "@/components/globalNavbar";
 import { Calendar } from "@/components/ui/calendar";
 import AlertNotification, { AlertType } from "@/components/ui/alertNotification";
 import { transaction } from "@/type/allType";
@@ -197,8 +196,7 @@ export default function HistoryPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-100">
-      <GlobalNavbar />
+    <div className="min-h-screen bg-white">
       <div className="max-w-6xl mx-auto p-6 md:flex gap-8">
         <div className="px-4 rounded-xl block md:hidden w-fit">
           <DropdownDate date={date} setDate={setDate} />
