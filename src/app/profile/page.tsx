@@ -33,8 +33,8 @@ export default function ProfilePage() {
         }
         const data = await res.json();
         setProfile(data.user);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        setError((err as Error).message);
       } finally {
         setIsLoading(false);
       }

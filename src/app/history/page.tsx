@@ -153,7 +153,7 @@ function SelectDayHistory({ selDate }: { selDate: Date | undefined }) {
                 </CollapsibleTrigger>
 
                 <CollapsibleContent className="border-t border-gray-100 p-4 bg-gray-50/50 rounded-b-2xl space-y-3">
-                  {catItems.map((item, idx) => (
+                  {catItems.map((item) => (
                     <Link key={item.id}href={`/history/${item.id}`}>
                     <Fragment >
                       <div

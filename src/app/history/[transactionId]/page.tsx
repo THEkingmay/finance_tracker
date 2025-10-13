@@ -51,7 +51,8 @@ export default function EditTransactionPage() {
                 setOriginalTransaction(data)
                 setFormInput(data)
             } catch (error) {
-                setAlert({ alertType: 'error', head: 'Error', description: 'Failed to fetch transaction data.', clear: () => setAlert(null) })
+                
+                setAlert({ alertType: 'error', head: 'Error', description: 'Failed to fetch transaction data.' + (error as Error).message, clear: () => setAlert(null) })
             } finally {
                 setIsLoading(false)
             }
@@ -81,8 +82,8 @@ export default function EditTransactionPage() {
             setIsEditing(false);
             setAlert({ alertType: 'success', head: 'สำเร็จ!', description: 'บันทึกการเปลี่ยนแปลงเรียบร้อยแล้ว', clear: () => setAlert(null) });
 
-        } catch (error: any) {
-            setAlert({ alertType: 'error', head: 'เกิดข้อผิดพลาด', description: error.message, clear: () => setAlert(null) });
+        } catch (error) {
+            setAlert({ alertType: 'error', head: 'เกิดข้อผิดพลาด', description: (error as Error).message, clear: () => setAlert(null) });
         } finally {
             setIsSaving(false);
         }
@@ -103,8 +104,8 @@ export default function EditTransactionPage() {
             // ส่งผู้ใช้กลับไปหน้ารายการหลักหลังจากลบสำเร็จ
             router.push('/history'); 
 
-        } catch (error: any) {
-            setAlert({ alertType: 'error', head: 'เกิดข้อผิดพลาด', description: error.message, clear: () => setAlert(null) });
+        } catch (error) {
+            setAlert({ alertType: 'error', head: 'เกิดข้อผิดพลาด', description: (error as Error).message, clear: () => setAlert(null) });
         } finally {
             setIsDeleting(false);
         }
