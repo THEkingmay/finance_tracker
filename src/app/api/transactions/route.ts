@@ -35,26 +35,145 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request : NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const date = searchParams.get('date');
+  const id = searchParams.get('id')
+
   try {
     const token = (await cookies()).get("token")?.value
     if (!token) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
+    const { uid } = jwt.verify(token, process.env.JWT_SECRET!) as { uid: string };
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { uid: string }
-    const uid = decoded.uid
+    if(date && !id){
+      const startOfDay = `${date}T00:00:00`
+      const endOfDay   = `${date}T23:59:59`
 
-    const { data, error } = await supabase
-      .from("transactions")
+      const { data, error } = await supabase
+        .from("transactions") // ตรวจสอบว่าตารางชื่อถูกต้อง
+        .select("*")
+        .eq("uid", uid)
+        .gte("created_at", startOfDay)
+        .lte("created_at", endOfDay)
+        .order("created_at", { ascending: true })
+            // console.log(data)
+
+      if (error) {
+        throw new Error(error.message);
+      }
+      return NextResponse.json({ data });
+
+    }else if(id && !date){
+      // console.log("get id ")
+      
+      const {data , error} = await supabase
+      .from('transactions')
       .select("*")
-      .eq("uid", uid)
-      .order("created_at", { ascending: false })
-    if (error) throw error
+      .eq("id" , id)
+      if (error) {
+        throw new Error(error.message);
+      }
+      // console.log(data)
+      if(data[0].uid !== uid) return NextResponse.json({message : "คุณไม่ใช่เจ้าของรายการนี้"})
+      return NextResponse.json({ data });
 
-    return NextResponse.json({ data })
+    }
+
   } catch (err) {
     console.error(err)
     return NextResponse.json({ message: "fetch failed" }, { status: 400 })
+  }
+}
+export async function PUT(req: NextRequest) {
+  try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const { uid } = jwt.verify(token, process.env.JWT_SECRET!) as { uid: string };
+
+    const { id, ...updateData } = await req.json();
+
+    if (!id) {
+      return NextResponse.json({ message: "Transaction ID is required" }, { status: 400 });
+    }
+
+    // 🔐 **Security Check:** First, verify the user owns the transaction they're trying to update.
+    const { data: existingTransaction, error: fetchError } = await supabase
+      .from("transactions")
+      .select("uid")
+      .eq("id", id)
+      .single();
+
+    if (fetchError || !existingTransaction) {
+      return NextResponse.json({ message: "Transaction not found" }, { status: 404 });
+    }
+
+    if (existingTransaction.uid !== uid) {
+      return NextResponse.json({ message: "Forbidden: You do not own this transaction" }, { status: 403 });
+    }
+
+    // If ownership is confirmed, proceed with the update.
+    const { data, error } = await supabase
+      .from("transactions")
+      .update(updateData)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({ message: "Transaction updated successfully", transaction: data });
+
+  } catch (err) {
+    console.error("PUT Error:", err);
+    return NextResponse.json({ message: (err as Error) .message || "Failed to update transaction" }, { status: 500 });
+  }
+}
+
+// --- DELETE a transaction ---
+export async function DELETE(req: NextRequest) {
+  try {
+    const token = (await cookies()).get("token")?.value;
+    if (!token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const { uid } = jwt.verify(token, process.env.JWT_SECRET!) as { uid: string };
+
+    const { id } = await req.json();
+    if (!id) {
+      return NextResponse.json({ message: "Transaction ID is required" }, { status: 400 });
+    }
+
+    // 🔐 **Security Check:** Verify ownership before deleting.
+    const { data: existingTransaction, error: fetchError } = await supabase
+      .from("transactions")
+      .select("uid")
+      .eq("id", id)
+      .single();
+
+    if (fetchError || !existingTransaction) {
+        return NextResponse.json({ message: "Transaction not found" }, { status: 404 });
+    }
+
+    if (existingTransaction.uid !== uid) {
+      return NextResponse.json({ message: "Forbidden: You do not own this transaction" }, { status: 403 });
+    }
+
+    // If ownership is confirmed, proceed with deletion.
+    const { error } = await supabase
+      .from("transactions")
+      .delete()
+      .eq("id", id);
+      
+    if (error) throw error;
+
+    return NextResponse.json({ message: "Transaction deleted successfully" });
+
+  } catch (err) {
+    console.error("DELETE Error:", err);
+    return NextResponse.json({ message:(err as Error).message || "Failed to delete transaction" }, { status: 500 });
   }
 }

@@ -14,6 +14,7 @@ import { Dialog, DialogContent , DialogTrigger } from "@/components/ui/dialog"
 import { DialogTitle } from "@radix-ui/react-dialog"
 
 import type { transaction , FormInput } from "@/type/allType"
+import Link from "next/link"
 
 
 // ---------------- Form ----------------
@@ -210,7 +211,7 @@ export function DailyHistory({ setAlert , reload }: { setAlert: (alert: AlertTyp
       const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
       console.log(today) // 👉 2025-10-08
       try {
-        const res = await fetch(`/api/transactions/${today}`)
+        const res = await fetch(`/api/transactions?date=${today}`)
         if (!res.ok) throw new Error("Failed to fetch")
         const result = await res.json()
         setItems(result.data || [])
@@ -251,8 +252,9 @@ export function DailyHistory({ setAlert , reload }: { setAlert: (alert: AlertTyp
       {!loading && items.length > 0 && (
         <div className="grid gap-4 grid-cols-1 md:grid-cols-3">
           {items.map((t) => (
+            <Link key={t.id} href={`/history/${t.id}`}>
             <div
-              key={t.id}
+              
               className="bg-white shadow-md rounded-lg px-4 py-3 flex flex-col justify-between border  hover:shadow-xl transition-shadow"
             >
               <div className="mb-2">
@@ -276,6 +278,7 @@ export function DailyHistory({ setAlert , reload }: { setAlert: (alert: AlertTyp
                 </span>
               </div>
             </div>
+            </Link>
           ))}
         </div>
       )}

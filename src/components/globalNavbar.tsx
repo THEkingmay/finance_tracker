@@ -62,6 +62,9 @@ export default function GlobalNavbar() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer">
+              <Link href="/" className="w-full">Home</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
               <Link href="/profile" className="w-full">Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer">

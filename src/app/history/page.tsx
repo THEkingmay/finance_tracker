@@ -7,6 +7,7 @@ import { transaction } from "@/type/allType";
 import { Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import { DropdownDate } from "./components/DropdownDate";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import Link from "next/link";
 
 function SelectDayHistory({ selDate }: { selDate: Date | undefined }) {
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ function SelectDayHistory({ selDate }: { selDate: Date | undefined }) {
       setLoading(true);
       const today = `${selDate.getFullYear()}-${String(selDate.getMonth() + 1).padStart(2, '0')}-${String(selDate.getDate()).padStart(2, '0')}`;
       try {
-        const res = await fetch(`/api/transactions/${today}`);
+        const res = await fetch(`/api/transactions?date=${today}`);
         if (!res.ok) throw new Error("Failed to fetch");
         const result = await res.json();
         setItems(result.data || []);
@@ -153,9 +154,10 @@ function SelectDayHistory({ selDate }: { selDate: Date | undefined }) {
 
                 <CollapsibleContent className="border-t border-gray-100 p-4 bg-gray-50/50 rounded-b-2xl space-y-3">
                   {catItems.map((item, idx) => (
-                    <Fragment key={item.id}>
+                    <Link key={item.id}href={`/history/${item.id}`}>
+                    <Fragment >
                       <div
-                        className={`flex justify-between items-center p-3 rounded-lg bg-white shadow-sm border ${
+                        className={`flex justify-between items-center p-3 mt-2 rounded-lg bg-white shadow-sm border ${
                           item.type === "income"
                             ? "border-green-100"
                             : "border-red-100"
@@ -181,6 +183,7 @@ function SelectDayHistory({ selDate }: { selDate: Date | undefined }) {
                         </div>
                       </div>
                     </Fragment>
+                    </Link>
                   ))}
                 </CollapsibleContent>
               </Collapsible>
