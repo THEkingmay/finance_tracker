@@ -70,6 +70,10 @@ export default function GlobalNavbar() {
             <DropdownMenuItem className="cursor-pointer">
               <Link href="/history" className="w-full">History</Link>
             </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <Link href="/analyze" className="w-full">Analyze</Link>
+            </DropdownMenuItem>
+            <div className="border-b mt-5"/>
             <DropdownMenuItem
               className={`cursor-pointer ${loading ? "opacity-50 pointer-events-none" : ""}`}
               onClick={handleLogout}
