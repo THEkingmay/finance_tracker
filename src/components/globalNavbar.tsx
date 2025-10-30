@@ -49,7 +49,10 @@ export default function GlobalNavbar() {
         {/* โลโก้ */}
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center">
-            <Image src="/favicon.ico" alt="Logo" width={32} height={32} />
+            <div className="font-bold text-lg">
+              <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent text-2xl">F</span>inance&nbsp;
+              <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent text-2xl">T</span>racker
+            </div>
           </Link>
         </div>
 
