@@ -21,13 +21,24 @@ import Link from "next/link"
 function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert: (alert: AlertType | null) => void }) {
   const [loading, setLoading] = useState(false)
   // const router = useRouter()
-
+  const getLocalDateTimeString = () => {
+      const now = new Date();
+      const year = now.getFullYear();
+      // getMonth() คืนค่า 0-11 เลยต้อง +1
+      const month = (now.getMonth() + 1).toString().padStart(2, '0'); 
+      const day = now.getDate().toString().padStart(2, '0');
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      
+      // ผลลัพธ์ที่ได้: "2025-10-30T09:53" (ตัวอย่าง)
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
   const [formInput, setFormInput] = useState<FormInput>({
     amount: 0,
     type: "expense",
     description: "",
     category: "",
-    date: "",
+    date: getLocalDateTimeString(),
   })
 
   const handleChange = (field: keyof FormInput, value: string | number | "income" | "expense" ) => {
@@ -83,6 +94,10 @@ function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert
     }
   }
 
+  const checkCatagory = (value : string)=>{
+    return formInput.category == value ? "bg-blue-50 border-blue-400 text-blue-700 shadow-sm" : "bg-white border-gray-200 hover:border-gray-400"
+  }
+
   return (
     <Card className="rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
      
@@ -120,48 +135,53 @@ function FormFinance({ onSuccess, setAlert }: { onSuccess?: () => void; setAlert
           </div>
         </div>
 
-       <div className="flex ">
-         {/* Amount */}
-        <div className="space-y-1 mr-3 w-1/2">
-          <Label className="text-sm font-medium text-gray-700">จำนวนเงิน</Label>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">฿</span>
-            <Input
-              type="number"
-              value={formInput.amount}
-              onChange={(e) => handleChange("amount", parseFloat(e.target.value))}
-              placeholder="0.00"
-              className="pl-9 h-12 text-lg rounded-xl border-gray-300 focus:ring-2 focus:ring-gray-900"
-            />
+        
+        {/* Category */}
+        <div className="space-y-1  ">
+          <Label className="text-sm font-medium text-gray-700">หมวดหมู่</Label>
+        
+          <div className="flex gap-x-2">
+              <button onClick={()=>handleChange("category" , "food")}  className={`flex-1 p-4 border rounded-lg transition-all duration-200 ${checkCatagory("food")}`} value={"food"}>อาหาร</button>
+              <button onClick={()=>handleChange("category" , "travel")}  className={`flex-1 p-4 border rounded-lg transition-all duration-200 ${checkCatagory("travel")}`} value={"travel"}>ท่องเที่ยว</button>
+              <button onClick={()=>handleChange("category" , "shopping")}  className={`flex-1 p-4 border rounded-lg transition-all duration-200 ${checkCatagory("shopping")}`} value={"shopping"}>ช้อปปิ้ง</button>
+              <button onClick={()=>handleChange("category" , "bills")}  className={`flex-1 p-4 border rounded-lg transition-all duration-200 ${checkCatagory("bills")}`} value={"bills"}>บิล</button>
+              <button onClick={()=>handleChange("category" , "other")}  className={`flex-1 p-4 border rounded-lg transition-all duration-200 ${checkCatagory("other")}`} value={"other"}>อื่นๆ</button>
           </div>
         </div>
 
-        {/* Category */}
-        <div className="space-y-1 w-1/2 ">
-          <Label className="text-sm font-medium text-gray-700">หมวดหมู่</Label>
-          <Select  value={formInput.category} onValueChange={(v) => handleChange("category", v)}>
-            <SelectTrigger className="h-12 rounded-xl py-6  w-full  border-gray-300 focus:ring-2 focus:ring-gray-900">
-              <SelectValue placeholder="เลือกหมวดหมู่" />
-            </SelectTrigger>
-            <SelectContent className="rounded-xl border-gray-200 shadow-md">
-              <SelectItem value="food">🍔 อาหาร</SelectItem>
-              <SelectItem value="travel">✈️ ท่องเที่ยว</SelectItem>
-              <SelectItem value="shopping">🛍️ ช้อปปิ้ง</SelectItem>
-              <SelectItem value="bills">📄 บิล</SelectItem>
-              <SelectItem value="other">🔖 อื่น ๆ</SelectItem>
-            </SelectContent>
-          </Select>
+           {/* Amount */}
+        <div className="mt-2 space-y-1">
+          <Label className="text-sm font-medium text-gray-700">จำนวนเงิน</Label>
+          <div className="flex gap-x-1 items-center">
+            <div className="flex-1  justify-center items-center  flex gap-1">
+              <Button onClick={()=>handleChange("amount" , formInput.amount-10)}>-10</Button>
+              <Button onClick={()=>handleChange("amount" , formInput.amount-1)}>-1</Button>
+            </div>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">฿</span>
+              <Input
+                type="number"
+                value={formInput.amount}
+                onChange={(e) => handleChange("amount", parseFloat(e.target.value))}
+                placeholder="0.00"
+                className="pl-9 h-12 text-lg rounded-xl border-gray-300 focus:ring-2 focus:ring-gray-900"
+              />
+            </div>
+            <div className="flex-1  justify-center items-center  flex gap-1">
+              <Button onClick={()=>handleChange("amount" , formInput.amount+1)}>+1</Button>
+              <Button onClick={()=>handleChange("amount" , formInput.amount+10)}>+10</Button>
+            </div>
+          </div>
         </div>
-       </div>
 
-        {/* Description */}
+        {/* Des cription */}
         <div className="space-y-1">
           <Label className="text-sm font-medium text-gray-700">รายละเอียด</Label>
           <Textarea
             value={formInput.description}
             onChange={(e) => handleChange("description", e.target.value)}
             placeholder="อธิบายเพิ่มเติม เช่น กินข้าวกับเพื่อน"
-            className="min-h-[100px] rounded-xl border-gray-300 focus:ring-2 focus:ring-gray-900"
+            className="min-h-[60px] rounded-xl border-gray-300 focus:ring-2 focus:ring-gray-900"
           />
         </div>
 

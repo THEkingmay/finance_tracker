@@ -73,6 +73,9 @@ export default function GlobalNavbar() {
             <DropdownMenuItem className="cursor-pointer">
               <Link href="/analyze" className="w-full">Analyze</Link>
             </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer">
+              <Link href="/qr" className="w-full">QR Generater</Link>
+            </DropdownMenuItem>
             <div className="border-b mt-5"/>
             <DropdownMenuItem
               className={`cursor-pointer ${loading ? "opacity-50 pointer-events-none" : ""}`}
