@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💰 Finance Tracker
 
-## Getting Started
+![Project Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+![Next.js](https://img.shields.io/badge/Next.js-14+-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue?style=flat-square&logo=typescript)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green?style=flat-square&logo=supabase)
 
-First, run the development server:
+> **Finance Tracker** คือเว็บแอปพลิเคชันสำหรับบริหารจัดการการเงินส่วนบุคคล ช่วยให้คุณบันทึกรายรับ-รายจ่าย ตรวจสอบสถานะทางการเงิน และวางแผนการใช้เงินได้อย่างมีประสิทธิภาพ ขับเคลื่อนด้วยฐานข้อมูลประสิทธิภาพสูงจาก Supabase
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 📸 Screen Preview
+
+*(พื้นที่สำหรับใส่รูปภาพ Dashboard หรือหน้า Login)*
+
+![Dashboard Screenshot](https://via.placeholder.com/800x400?text=Dashboard+Preview)
+
+---
+
+## ✨ ฟีเจอร์หลัก (Key Features)
+
+* **🔐 User Authentication:** ระบบสมาชิกที่ปลอดภัย (สามารถเชื่อมต่อกับ Supabase Auth ได้)
+* **💸 Income & Expense Tracking:** บันทึกรายการรายรับและรายจ่ายได้อย่างละเอียด พร้อมระบุหมวดหมู่
+* **📊 Dashboard Overview:** หน้าสรุปผลภาพรวมทางการเงิน แสดงยอดเงินคงเหลือ และประวัติการทำธุรกรรมล่าสุด
+* **☁️ Cloud Database:** จัดเก็บข้อมูลอย่างปลอดภัยและเรียกใช้ได้รวดเร็วผ่าน **Supabase (PostgreSQL)**
+* **📱 Responsive Interface:** ใช้งานได้สะดวกทุกที่ ทั้งบนคอมพิวเตอร์และมือถือ
+
+---
+
+## 🛠️ Tech Stack
+
+เทคโนโลยีที่ใช้ในการพัฒนา:
+
+* **Framework:** [Next.js](https://nextjs.org/) (App Router)
+* **Language:** [TypeScript](https://www.typescriptlang.org/)
+* **Database & Backend:** [Supabase](https://supabase.com/) (PostgreSQL)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Deployment:** [Vercel](https://vercel.com/)
+
+---
+
+## 🚀 การติดตั้งและเริ่มต้นใช้งาน (Getting Started)
+
+1. **Clone Repository**
+   ```bash
+   git clone [https://github.com/THEkingmay/finance_tracker.git](https://github.com/THEkingmay/finance_tracker.git)
+   cd finance_tracker
+2.ติดตั้ง Dependencies
+
+```Bash
+    npm  install
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3.Environment
+```Bash
+  SUPABASE_URL = ''
+  SUPABASE_KEY = ''
+  JWT_SECRET = ''
+```
+4.รันโปรเจค
+```Bash
+  npm run dev
+```
