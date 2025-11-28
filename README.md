@@ -12,9 +12,11 @@
 
 ## 📸 Screen Preview
 
-*(พื้นที่สำหรับใส่รูปภาพ Dashboard หรือหน้า Login)*
-
-![Dashboard Screenshot](https://via.placeholder.com/800x400?text=Dashboard+Preview)
+<img width="759" height="787" alt="image" src="https://github.com/user-attachments/assets/83e1119c-c955-4ba2-b7c3-5410641f3b06" />
+<img width="1912" height="838" alt="image" src="https://github.com/user-attachments/assets/274ed9af-a6e3-4708-9bf2-b154a7b626c7" />
+<img width="1910" height="831" alt="image" src="https://github.com/user-attachments/assets/e1a8b335-12fd-4a28-b402-1c4f7c700366" />
+<img width="1879" height="850" alt="image" src="https://github.com/user-attachments/assets/edec24eb-d2da-4bf7-ad6b-2d9b2d8067e2" />
+<img width="1887" height="788" alt="image" src="https://github.com/user-attachments/assets/6ab1fb3f-d1da-4376-b643-12568aee3b25" />
 
 ---
 
